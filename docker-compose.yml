@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  tecdron_humble:
+    image: genetic_algorithm:latest
+    container_name: genetic_algorithm_container
+    hostname: genetic_algorithm_container
+    runtime: nvidia
+    environment:
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
+      - DISPLAY
+      #- RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      #- ROS_DOMAIN_ID=1
+    devices:
+      - /dev/dri
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./src/:/genetic_algorithm/src:rw  # Mount the current directory as readable and writable
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    stdin_open: true
+    tty: true
+    restart: no
+    network_mode: "host"  # Add this line to use the host network
+    command: /bin/bash
+    #command: bash -c "source /opt/ros/humble/setup.bash && source install/setup.bash && ros2 launch robot_gazebo main_robot.launch.py"
+

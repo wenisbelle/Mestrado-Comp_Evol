@@ -1,0 +1,53 @@
+<?xml version="1.0"?> 
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="gazebo_essentials" > 
+
+
+  <xacro:macro name="gazebo_essentials" params="robot_name">
+
+    <gazebo>
+    <plugin filename="ignition-gazebo-odometry-publisher-system" name="ignition::gazebo::systems::OdometryPublisher">
+        <odom_topic>/model/${robot_name}/odometry</odom_topic>
+        <frame_id>odom</frame_id>
+        <child_frame_id>${robot_name}_base_link</child_frame_id>
+        <use_local_frame>true</use_local_frame>
+        <dimensions>3</dimensions>
+    </plugin>
+    </gazebo>
+
+    <gazebo>
+      <plugin filename="ignition-gazebo-joint-state-publisher-system" name="ignition::gazebo::systems::JointStatePublisher"/>
+    </gazebo>
+
+
+    <gazebo reference="${robot_name}_lidar_link">
+          <sensor type="gpu_lidar" name="lidar_sensor">
+              <pose relative_to='${robot_name}_lidar_link'>0 0 0 0 0 0</pose>
+              <always_on>1</always_on>
+              <visualize>true</visualize>
+              <update_rate>20</update_rate>
+              <topic>/${robot_name}_lidar/laser/scan</topic>
+              <ray>
+                  <scan>
+                      <horizontal>
+                          <samples>720</samples>
+                          <resolution>1</resolution>
+                          <min_angle>${-3.1415 * (3 / 4.5)}</min_angle>
+                          <max_angle>${3.1415 * (3 / 4.5)}</max_angle>
+                      </horizontal>
+                  </scan>
+                  <range>
+                      <min>0.20</min>
+                      <max>10.0</max>
+                      <resolution>0.01</resolution>
+                  </range>
+                  <noise>
+                      <type>gaussian</type>
+                      <mean>0.0</mean>
+                      <stddev>0.01</stddev>
+                  </noise>
+              </ray>
+          </sensor>
+     </gazebo>
+
+  </xacro:macro>
+</robot>

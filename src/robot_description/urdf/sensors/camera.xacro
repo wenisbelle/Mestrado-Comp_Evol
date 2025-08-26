@@ -1,0 +1,192 @@
+<?xml version="1.0"?> 
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="camera" > 
+<xacro:property name="PI" value="3.1415926535897931" />
+  <material name="red">
+      <color rgba="1.0 0.0 0.0 1"/>
+  </material>
+
+  <material name="green_light">
+      <color rgba="0.0 1.0 0.0 1"/>
+  </material>
+
+  <material name="green_dark">
+    <color rgba="0.0 0.5 0.0 1"/>
+  </material>
+
+  <material name="blue">
+      <color rgba="0.0 0.0 1.0 1"/>
+  </material>
+
+
+<xacro:macro name="robot_camera"> 
+  
+ <!-- FRONT CAMERA --> 
+  
+  <joint name="front_camera_joint" type="fixed">
+    <axis xyz="0 0 0" />
+    <origin xyz="0.19 0.0 0.0" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="front_camera_link"/>
+  </joint>
+
+  <link name="front_camera_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+     <box size="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+
+ <!-- REAR CAMERA --> 
+
+    <joint name="rear_camera_joint" type="fixed">
+    <axis xyz="0 0 0" />
+    <origin xyz="-0.19 0.0 0.0" rpy="0 0 ${PI}"/>
+    <parent link="base_link"/>
+    <child link="rear_camera_link"/>
+  </joint>
+
+  <link name="rear_camera_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+     <box size="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+   <!-- RIGHT CAMERA --> 
+  
+  <joint name="right_camera_joint" type="fixed">
+    <axis xyz="0 0 0" />
+    <origin xyz="0.0 -0.10 0.0" rpy="0 0 -${PI/2}"/>
+    <parent link="base_link"/>
+    <child link="right_camera_link"/>
+  </joint>
+
+  <link name="right_camera_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+     <box size="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+
+ <!-- LEFT CAMERA --> 
+
+    <joint name="ledt_camera_joint" type="fixed">
+    <axis xyz="0 0 0" />
+    <origin xyz="0.0 0.10 0.0" rpy="0 0 ${PI/2}"/>
+    <parent link="base_link"/>
+    <child link="left_camera_link"/>
+  </joint>
+
+  <link name="left_camera_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+     <box size="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+  
+  <!-- Depth Camera-->
+  <joint name="camera_depth_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_depth_link"/>
+    <origin xyz="0.21 0.0 0.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+  <link name="camera_depth_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://robot_description/meshes/realsense.dae"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="depth_camera_optical_joint" type="fixed">
+    <parent link="camera_depth_link"/>
+    <child link="depth_camera_link_optical"/>
+    <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+  </joint>
+  
+  <link name="depth_camera_link_optical"></link>
+
+  <!-- POINT CLOUND SENSOR -->
+  <link name="pointcloud_link">
+  </link>
+
+  <joint name="pointcloud_link_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0"/>
+    <parent link="front_camera_link"/>
+    <child link="pointcloud_link"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+
+
+</xacro:macro>
+
+
+</robot> 
