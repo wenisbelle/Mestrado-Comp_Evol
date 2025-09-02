@@ -10,6 +10,12 @@
 		<geometry>
 			<box size="0.05 0.05 0.05"/>
 		</geometry>
+		<surface>
+        	<contact>
+              <category_bitmask>0x02</category_bitmask>
+              <collide_bitmask>0xFFFD</collide_bitmask>
+            </contact>
+        </surface>
 	</collision>
 
 	<inertial>

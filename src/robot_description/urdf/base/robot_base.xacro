@@ -12,6 +12,12 @@
           <geometry>
             <box size="0.50 0.30 0.10" />
           </geometry>
+          <surface>
+            <contact>
+              <category_bitmask>0x02</category_bitmask>
+              <collide_bitmask>0xFFFD</collide_bitmask>
+            </contact>
+          </surface>
         </collision>
         <inertial>
           <mass value="5.0" />

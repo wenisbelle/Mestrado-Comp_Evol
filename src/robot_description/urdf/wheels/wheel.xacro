@@ -9,7 +9,13 @@
     <origin xyz="0 0 0" rpy="1.5707963267949 0 0" /> 
     <geometry> 
       <cylinder radius="0.10" length="0.07" />
-    </geometry> 
+    </geometry>
+    <surface>
+      <contact>
+        <category_bitmask>0x02</category_bitmask>
+        <collide_bitmask>0xFFFD</collide_bitmask>
+      </contact>
+    </surface>
   </collision> 
 
   <inertial> 
@@ -57,7 +63,7 @@
           <ode>
             <mu>1.0</mu> 
             <mu2>0.03</mu2>
-            <fdir1 ignition:expressed_in="base_link">1 0 0</fdir1>
+            <fdir1 ignition:expressed_in="${parent}">1 0 0</fdir1>
           </ode>
         </friction>
       </surface>
